@@ -5,20 +5,17 @@ const cors = require('cors');
 require('express-async-errors');
 
 
-const productsRouter = require('./routes/products');
+
 
 //middlewear
 app.use(cors());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-//routes
-app.get('/', (req, res) => {
-    res.send('Store API');
-});
 
-app.use('api/v1/products', productsRouter);
-    
+
+app.use('/api/products', require('./controllers/productController'));
+
 
 module.exports = app;
 

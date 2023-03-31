@@ -1,15 +1,42 @@
-const mongoose = require('mongoose');
+const Product = require('../schemas/productSchema');
 
-const ProductSchema = new mongoose.Schema(
-    {
-        name: { type: String, required: [true, 'Please provide a product name'] },
-        description: { type: String, required: true },
-        price: { type: Number, required: true },
-        imgURL: { type: String, required: true }
-    },
-    { timestamps: true }
-);
 
-const ProductModel = mongoose.model('Product', ProductSchema);
+const createNewProduct = async (req, res) => {
+    try {
+        const { name, description, price, imgURL } = req.body;
 
-module.exports = ProductModel;
+        const newProduct = await Product.create(req.body);
+        res.status(200).json({ newProduct }); 
+
+    } catch (err) {
+        res.status(400).json({ err: 'Product could not be added' });
+    };
+};
+
+const getAllProducts = async (req, res) => {
+    try {
+        const allProducts = await Product.find();
+        res.status(200).json({ allProducts });
+    } catch (err) {
+        res.status(400).json({ err: 'Products could not be found' });
+    };
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+module.exports = {
+    createNewProduct,
+    getAllProducts,
+}
