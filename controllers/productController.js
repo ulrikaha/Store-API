@@ -7,13 +7,13 @@ router.post('/',productModel.createNewProduct)
 
 //READ
 router.get('/', productModel.getAllProducts)
-//router.get('/:id', productModel.getSingelProduct)
+router.get('/:id', productModel.getSingleProduct)
 
 //UPDATE
-//router.put('/:id', productModel.updateProduct)
+router.put('/:id', productModel.updateProduct)
 
 //DELETE
-//router.delete('/:id', productModel.deleteProduct)
+router.delete('/:id', productModel.deleteProduct)
 
 
 module.exports = router
