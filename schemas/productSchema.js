@@ -11,7 +11,9 @@ const productSchema = new Schema({
     description: {type: String, required: true},
     imgURL: {type: String, required: true},
     tags: [tagSchema]
-});
+},
+
+{timestamps: true});
 
 const Product = mongoose.model('Product', productSchema);
 

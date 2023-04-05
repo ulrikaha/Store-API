@@ -1,24 +1,46 @@
 const User = require('../schemas/userSchema');
-const jwt = require('jsonwebtoken');
-const env = require('dotenv').config();
+const bcrypt = require('bcryptjs');
+const auth = require('../authentication/auth');
 
-const secretKey = process.env.SECRET_KEY;
+
+
+
 
 
 const createNewUser = async (req, res) => {
     try {
         const { firstName, lastName, email, password } = req.body;
-
-        const newUser = await User.create(req.body);
         
-        const savedUser = await newUser.save();
+        if(!firstName || !lastName || !email || !password) {
+            return res.status(400).json({ err: 'Please fill in all fields' });
+        };
 
-        const token = jwt.sign({ id: savedUser._id }, secretKey, { expiresIn: '10d' });
+        const salt = bcrypt.genSaltSync(10);
 
-        res.status(201).json({ token, user: savedUser });
+        bcrypt.hash(password, salt, (err, hash) => {
+            if(err) {
+                return res.status(500).json({
+                    message: 'Error hashing password'
+                })  
+            };
+        });
+
+        User.create({
+            firstName,
+            lastName,
+            email,
+            passwordHash: hash,
+        })
+
+        .then(user => {
+            res.status(201).json({ 
+            token: auth.generateToken(user)
+        })
+
+        })
 
     } catch (err) {
-        res.status(400).json({ err: 'User could not be added' });
+        res.status(500).json({ err: 'Server error' });
     };
 };
 
