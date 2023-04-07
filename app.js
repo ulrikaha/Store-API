@@ -13,8 +13,8 @@ app.use(express.json());
 
 //controllers
 app.use('/api/products', require('./controllers/productController'));
-
 app.use('/api/users', require('./controllers/userController'));
+//app.use('/api/orders', require('./controllers/orderController'));
 
 
 
