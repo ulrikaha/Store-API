@@ -4,17 +4,15 @@ const auth = require('../authentication/auth');
 
 
 
-
-
-
-const createNewUser = async (req, res) => {
-    try {
+const registerNewUser = async (req, res) => {
         const { firstName, lastName, email, password } = req.body;
         
         if(!firstName || !lastName || !email || !password) {
-            return res.status(400).json({ err: 'Please fill in all fields' });
+            return res.status(400).json({ 
+                err: 'Please fill in all fields' 
+            });
         };
-
+         
         const salt = bcrypt.genSaltSync(10);
 
         bcrypt.hash(password, salt, (err, hash) => {
@@ -23,15 +21,13 @@ const createNewUser = async (req, res) => {
                     message: 'Error hashing password'
                 })  
             };
-        });
 
-        User.create({
-            firstName,
-            lastName,
-            email,
-            passwordHash: hash,
+            User.create({
+                firstName,
+                lastName,
+                email,
+                passwordHash: hash,
         })
-
         .then(user => {
             res.status(201).json({ 
             token: auth.generateToken(user)
@@ -39,12 +35,67 @@ const createNewUser = async (req, res) => {
 
         })
 
-    } catch (err) {
-        res.status(500).json({ err: 'Server error' });
+    })
+}
+
+const loginUser = async (req, res) => {
+    const { email, password } = req.body;
+
+    if(!email || !password) {
+        return res.status(400).json({
+            message: 'Please fill in all fields'
+        })
     };
-};
+
+    User.findOne({ email })
+    .then(user => {
+
+        if(!user) {
+            return res.status(401).json({
+                message: 'Incorrect email or password'
+            })
+        };
+
+        bcrypt.compare(password, user.passwordHash, (err, result) => {
+            if(err) {
+                return res.status(500).json({
+                    message: 'Error comparing passwords'
+                })
+            };
+
+            if(!result) {
+                return res.status(401).json({
+                    message: 'Incorrect email or password'
+                })
+            };
+                res.status(200).json({
+                    token: auth.generateToken(user)
+                })
+            
+                })
+            })
+        }
+
+        const getUserData = (req, res) => {
+       const { _id, displayName } = req.userData;
+
+       User.findById(_id)
+         .then(user => {
+            res.status(200).json({
+            })
+            })
+        }
 
 
+
+    const getAllUsers = async (req, res) => {
+            try {
+                const allUsers = await User.find();
+                res.status(200).json({ allUsers });
+            } catch (err) {
+                res.status(400).json({ err: 'The users could not be found' });
+            };
+        };
 
 
 
@@ -53,5 +104,8 @@ const createNewUser = async (req, res) => {
 
 
 module.exports = {
-  createNewUser,  
+  registerNewUser, 
+    loginUser,
+    getUserData,
+    getAllUsers
 }

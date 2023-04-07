@@ -3,17 +3,23 @@ const userModel = require('../models/userModel')
 const auth = require('../authentication/auth')
 
 
+
 //CREATE A NEW USER
-router.post('/register', userModel.createNewUser)
+router.post('/register', userModel.registerNewUser)
 
-//READ
-//router.get('/', userModel.getAllUsers)
-//router.get('/:id', userModel.getSingleUser)
+//LOGIN USER
+router.post('/login', userModel.loginUser)
 
-//UPDATE
+//GET ALL USERS
+router.get('/', userModel.getAllUsers)
+
+//GET SINGLE USER
+router.get('/:id', userModel.getUserData)
+
+//UPDATE A USER
 //router.put('/:id', userModel.updateUser)
 
-//DELETE
+//DELETE A USER
 //router.delete('/:id', userModel.deleteUser)
 
 
