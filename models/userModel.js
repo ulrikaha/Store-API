@@ -3,7 +3,7 @@ const bcrypt = require('bcryptjs');
 const auth = require('../authentication/auth');
 
 
-
+//Register a new user
 const registerNewUser = async (req, res) => {
         const { firstName, lastName, email, password } = req.body;
         
@@ -38,6 +38,8 @@ const registerNewUser = async (req, res) => {
     })
 }
 
+
+//Login a user
 const loginUser = async (req, res) => {
     const { email, password } = req.body;
 
@@ -75,30 +77,52 @@ const loginUser = async (req, res) => {
                 })
             })
         }
+    
 
-        const getUserData = (req, res) => {
-       const { _id, displayName } = req.userData;
 
-       User.findById(_id)
-         .then(user => {
-            res.status(200).json({
-            })
-            })
-        }
+        //Get user data
+        const getUserData = async (req, res) => {
+        const user = await User.findById(req.params.id);
+
+            if (!user) {
+              return res.status(404).json({
+                message: 'Could not find this user'
+              });
+
+            }
+            
+           res.status(200).json({
+              _id: user._id,
+              displayName: user.displayName,
+              email: user.email,
+            });
+            }
+
+         
+
+           
+           
+               
+           
+     
+
+
 
 
 
     const getAllUsers = async (req, res) => {
-            try {
-                const allUsers = await User.find();
-                res.status(200).json({ allUsers });
-            } catch (err) {
-                res.status(400).json({ err: 'The users could not be found' });
-            };
+            const allUsers = await User.find();
+            if (!allUsers) {
+                return res.status(400).json({ 
+                    message: 'The users could not be found' });
+
+            } else {
+            return res.status(200).json({ allUsers });
+            }
         };
 
 
-        const updateUser = async (req, res) => {
+        /*const updateUser = async (req, res) => {
             try {
                 const data = await User.findByIdAndUpdate(req.params.id, req.body, { new: true });
                 if (!data) {
@@ -132,7 +156,8 @@ const loginUser = async (req, res) => {
                     err: err.message
                 });
             }
-        };
+        };*/
+    
 
 
 
@@ -144,7 +169,6 @@ module.exports = {
     loginUser,
     getUserData,
     getAllUsers,
-    updateUser,
-    deleteUser
-
+    //updateUser,
+    //deleteUser,
 }
