@@ -16,11 +16,6 @@ router.get('/', userModel.getAllUsers)
 //GET SINGLE USER
 router.get('/:id', userModel.getUserData)
 
-//UPDATE A USER
-//router.put('/:id', auth.userModel.updateUser)
-
-//DELETE A USER
-//router.delete('/:id', auth.userModel.deleteUser)
 
 
 module.exports = router;

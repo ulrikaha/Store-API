@@ -5,7 +5,6 @@ const auth = require('../authentication/auth')
 
 
 //CREATE A NEW ORDER IF USER IS LOGGED IN
-
 router.post('/', auth.verifyToken, orderModel.createNewOrder)
 
 

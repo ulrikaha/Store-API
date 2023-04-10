@@ -97,7 +97,7 @@ const loginUser = async (req, res) => {
               firstName: user.firstName,
                 lastName: user.lastName,
                 email: user.email,
-                //Todo connect the orders to the user
+                orders: user.orders
             });
             }
 
