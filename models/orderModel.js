@@ -55,8 +55,11 @@ const getOrdersByUser = async (req, res) => {
     try {
         const userId = req.userData._id;
 
-        const orders = await Order.find({ user: userId });
-
+        const orders = await Order.find({ user: userId }).populate({
+           path: 'orderLines.product',
+           select: 'name price _id'
+        });
+        
         return res.status(200).json(orders);
 
     } catch (error) {
