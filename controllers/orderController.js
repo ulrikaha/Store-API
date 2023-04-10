@@ -10,6 +10,9 @@ router.post('/', auth.verifyToken, orderModel.createNewOrder)
 
 
 //GET ALL ORDERS BY USER IF USER IS LOGGED IN , SEND BEARER TOKEN 
-//router.get('/', auth.verifyToken, orderModel.getOrderByUser)
+router.get('/orders', auth.verifyToken, orderModel.getOrdersByUser)
+
+
+
 
 module.exports = router;

@@ -1,6 +1,7 @@
 const User = require('../schemas/userSchema');
 const bcrypt = require('bcryptjs');
 const auth = require('../authentication/auth');
+const Order = require('../schemas/orderSchema');
 
 
 //Register a new user
@@ -80,7 +81,7 @@ const loginUser = async (req, res) => {
     
 
 
-        //Get user data
+        //Get user data and orders
         const getUserData = async (req, res) => {
         const user = await User.findById(req.params.id);
 
@@ -93,24 +94,15 @@ const loginUser = async (req, res) => {
             
            res.status(200).json({
               _id: user._id,
-              displayName: user.displayName,
-              email: user.email,
+              firstName: user.firstName,
+                lastName: user.lastName,
+                email: user.email,
+                //Todo connect the orders to the user
             });
             }
 
          
-
-           
-           
-               
-           
-     
-
-
-
-
-
-    const getAllUsers = async (req, res) => {
+            const getAllUsers = async (req, res) => {
             const allUsers = await User.find();
             if (!allUsers) {
                 return res.status(400).json({ 
@@ -122,41 +114,9 @@ const loginUser = async (req, res) => {
         };
 
 
-        /*const updateUser = async (req, res) => {
-            try {
-                const data = await User.findByIdAndUpdate(req.params.id, req.body, { new: true });
-                if (!data) {
-                    res.status(404).json({
-                        message: 'Could not find this user'
-                    });
-                    return;
-                }
-                res.status(200).json(data);
-            } catch (err) {
-                res.status(500).json({
-                    message: 'Something went wrong when updating this user!',
-                    err: err.message
-                });
-            }
-        };
         
-        const deleteUser = async (req, res) => {
-            try {
-                const data = await User.findByIdAndDelete(req.params.id);
-                if (!data) {
-                    res.status(404).json({
-                        message: 'Could not find this user'
-                    });
-                    return;
-                }
-                res.status(200).json(data);
-            } catch (err) {
-                res.status(500).json({
-                    message: 'Something went wrong when deleting this user!',
-                    err: err.message
-                });
-            }
-        };*/
+        
+        
     
 
 
@@ -169,6 +129,4 @@ module.exports = {
     loginUser,
     getUserData,
     getAllUsers,
-    //updateUser,
-    //deleteUser,
-}
+    }

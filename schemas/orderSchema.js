@@ -6,7 +6,7 @@ const User = require('./userSchema');
 const orderLineSchema = new Schema({
     product: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Product'
+        ref: 'Product',
     },
     quantity: {type: Number, required: true},
 });
@@ -15,7 +15,7 @@ const orderLineSchema = new Schema({
 
 const orderSchema = new Schema({
     user: {type: Schema.Types.ObjectId, 
-        ref: 'User'
+        ref: 'User',
     },
     orderLines: {
         type: [orderLineSchema],
