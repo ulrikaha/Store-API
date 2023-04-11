@@ -3,18 +3,22 @@ const { Schema } = mongoose;
 const Product = require('./productSchema');
 const User = require('./userSchema');
 
+
 const orderLineSchema = new Schema({
     product: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Product',
     },
-    quantity: {type: Number, required: true},
+    quantity: {
+        type: Number, required: true
+    },
 });
 
 
 
 const orderSchema = new Schema({
-    user: {type: Schema.Types.ObjectId, 
+    user: {
+        type: Schema.Types.ObjectId, 
         ref: 'User',
     },
     orderLines: {
