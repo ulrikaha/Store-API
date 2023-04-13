@@ -1,11 +1,12 @@
+//Importing mongoose and schema
 const mongoose = require('mongoose');
 const { Schema } = mongoose;
-const Product = require('./productSchema');
-const User = require('./userSchema');
 
 
+
+//Orderline schema
 const orderLineSchema = new Schema({
-    product: {
+    product: { 
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Product',
     },
@@ -16,6 +17,7 @@ const orderLineSchema = new Schema({
 
 
 
+//Order schema
 const orderSchema = new Schema({
     user: {
         type: Schema.Types.ObjectId, 
@@ -30,8 +32,12 @@ const orderSchema = new Schema({
         required: true
     },
 },
+
 {timestamps: true});
 
+
+
+//Creating Order model and exporting it
 const Order = mongoose.model('Order', orderSchema);
 
 module.exports = Order;

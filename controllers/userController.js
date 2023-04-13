@@ -1,21 +1,20 @@
+//Import router and userModel
 const router = require('express').Router()
 const userModel = require('../models/userModel')
-const auth = require('../authentication/auth')
 
 
-
-//CREATE A NEW USER
+//Create a new user
 router.post('/register', userModel.registerNewUser)
 
-//LOGIN USER
+//Login a user
 router.post('/login', userModel.loginUser)
 
-//GET ALL USERS
+//Get all users
 router.get('/', userModel.getAllUsers)
 
-//GET SINGLE USER
+//GET a single user
 router.get('/:id', userModel.getUserData)
 
 
-
+//Export router
 module.exports = router;

@@ -1,9 +1,11 @@
-const bcrypt = require('bcryptjs');
+//Import order,user and product moduels
 const Order = require('../schemas/orderSchema');
 const User = require('../schemas/userSchema');
 const Product = require('../schemas/productSchema');
 
 
+
+//Create a new order if the user is logged in
 const createNewOrder = async (req, res) => {
     try {
 
@@ -72,6 +74,7 @@ const createNewOrder = async (req, res) => {
 
 
 
+//Get all orders for a specific user
   const getOrdersByUser = async (req, res) => {
     try {
         const userId = req.userData._id;
@@ -80,17 +83,21 @@ const createNewOrder = async (req, res) => {
            path: 'orderLines.product',
            select: 'name price _id'
         });
-        
+
         return res.status(200).json(orders);
 
+            
     } catch (error) {
         return res.status(500).json({
-            message: 'Error getting orders'
+            message: 'Error getting orders',
+
         })
     }
 }
 
 
+
+    //Export modules
     module.exports = {
     createNewOrder,
     getOrdersByUser

@@ -1,17 +1,16 @@
+//Import express,router, auth and orderModel
 const router = require('express').Router()
 const orderModel = require('../models/orderModel')
 const auth = require('../authentication/auth')
 
 
-
-//CREATE A NEW ORDER IF USER IS LOGGED IN
+//Create a new order, if user is logged in, send token
 router.post('/', auth.verifyToken, orderModel.createNewOrder)
 
 
-//GET ALL ORDERS BY USER IF USER IS LOGGED IN , SEND BEARER TOKEN 
+//Get all orders, if user is logged in, send token
 router.get('/orders', auth.verifyToken, orderModel.getOrdersByUser)
 
 
-
-
+//Export router
 module.exports = router;

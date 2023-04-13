@@ -1,21 +1,22 @@
+//Import express,router and productModel
 const router = require('express').Router()
 const productModel = require('../models/productModel')
 
 
-//CREATE A NEW PRODUCT
+//Create a new product
 router.post('/',productModel.createNewProduct)
 
-//GET ALL PRODUCTS
+//Get all products
 router.get('/', productModel.getAllProducts)
 
-//GET SINGLE PRODUCT
+//Get single product
 router.get('/:id', productModel.getSingleProduct)
 
-//UPDATE A PRODUCT
+//Update a product
 router.put('/:id', productModel.updateProduct)
 
-//DELETE A PRODUCT
+//Delete a product
 router.delete('/:id', productModel.deleteProduct)
 
-
+//Export router
 module.exports = router
