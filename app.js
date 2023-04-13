@@ -4,7 +4,6 @@ const app = express();
 const cors = require('cors');
 
 
-
 //Middlewear
 app.use(cors());
 app.use(express.urlencoded({ extended: true }));

@@ -1,130 +1,128 @@
 //Import product module
-const Product = require('../schemas/productSchema');
-
+const Product = require("../schemas/productSchema");
+const mongoose = require("mongoose");
 
 
 //Create new product
 const createNewProduct = async (req, res) => {
-    try {
-        const { name, category, description, price, imgURL, quantity} = req.body;
+  try {
+    const { name, category, description, price, imgURL, quantity } = req.body;
 
-        
-        if (!name || !category || !description || !price || !imgURL || !quantity) {
-            return res.status(400).json({ message: 'All product fields are required' });
-        }
-
-        const newProduct = await Product.create(req.body);
-
-        res.status(200).json({ newProduct });
-
-    } catch (err) {
-        res.status(500).json({
-            message: 'An error occurred while creating the product',
-            error: err.message
-        });
+    if (!name || !category || !description || !price || !imgURL || !quantity) {
+      return res
+        .status(400).json({ 
+            message: "All product fields are required" });
     }
-};
 
+    const newProduct = await Product.create(req.body);
+
+    res.status(200).json({ newProduct });
+
+  } catch (err) {
+    res.status(500).json({
+      message: "An error occurred while creating the product",
+      error: err.message,
+    });
+  }
+};
 
 
 //Get all products
 const getAllProducts = async (req, res) => {
-    try {
+  try {
+    let allProducts = await Product.find();
 
-        let allProducts = await Product.find();
+    res.status(200).json({ allProducts });
 
-        res.status(200).json({ allProducts });
-
-    } catch (err) {
-        res.status(500).json({ 
-            message: 'An error occurred while getting the products' ,
-            error: err.message
-   }); 
-}
-
+  } catch (err) {
+    res.status(500).json({
+      message: "An error occurred while getting the products",
+      error: err.message,
+    });
+  }
 };
 
-        
-        
-        
+
 //Get single product
 const getSingleProduct = async (req, res) => {
-    try {
+  try {
+    const oneProduct = await Product.findById(req.params.id);
 
-      const oneProduct = await Product.findById(req.params.id);
-
-      if (!oneProduct) {
-        res.status(404).json({
-          message: 'Could not find this product'
-        });
-        return;
-      }
-      res.status(200).json(oneProduct);
-
-    } catch (err) {
-      res.status(500).json({
-        message: 'An error occurred while getting the products',
-        err: err.message
+    if (!oneProduct) {
+      res.status(404).json({
+        message: "Could not find this product",
       });
+      return;
     }
-  };
+    res.status(200).json(oneProduct);
 
-
-  
-
-//Update a product
-  const updateProduct = async (req, res) => {
-    try {
-
-        const upProduct = await Product.findByIdAndUpdate(req.params.id, req.body, { new: true });
-
-        if (!upProduct) {
-            res.status(404).json({
-                message: 'Could not find this product'
-            });
-            return;
-        }
-        res.status(200).json(upProduct);
-
-    } catch (err) {
-        res.status(500).json({
-            message: 'Something went wrong when updating this product!',
-            err: err.message
-        });
-    }
+  } catch (err) {
+    res.status(500).json({
+      message: "An error occurred while getting the products",
+      err: err.message,
+    });
+  }
 };
 
+
+//Update a product
+const updateProduct = async (req, res) => {
+  try {
+    const upProduct = await Product.findByIdAndUpdate(req.params.id, req.body, {
+      new: true,
+    });
+
+    if (!upProduct) {
+      res.status(404).json({
+        message: "Could not find this product",
+      });
+      return;
+    }
+    res.status(200).json(upProduct);
+    
+  } catch (err) {
+    res.status(500).json({
+      message: "Something went wrong when updating this product!",
+      err: err.message,
+    });
+  }
+};
 
 
 //Delete a product
 const deleteProduct = async (req, res) => {
-    try {
+  try {
 
-        const data = await Product.findByIdAndDelete(req.params.id);
-
-        if (!data) {
-            res.status(404).json({
-                message: 'Could not find this product'
-            });
-            return;
-        }
-        res.status(200).json(data);
-
-    } catch (err) {
-        res.status(500).json({
-            message: 'Something went wrong when deleting this product!',
-            err: err.message
+    if(!mongoose.Types.ObjectId.isValid(req.params.id)) {
+        res.status(400).json({
+            message: "Invalid product ID",
         });
+        return;
     }
+
+    const delProduct = await Product.findByIdAndDelete(req.params.id);
+
+    if (!delProduct) {
+      res.status(404).json({
+        message: "Could not find this product",
+      });
+      return;
+    }
+    res.status(200).json(delProduct);
+
+  } catch (err) {
+    res.status(500).json({
+      message: "Something went wrong when deleting this product!",
+      err: err.message,
+    });
+  }
 };
-
-
 
 //Export modules
 module.exports = {
-    createNewProduct,
-    getAllProducts,
-    getSingleProduct,
-    updateProduct,
-    deleteProduct
-}
+  createNewProduct,
+  getAllProducts,
+  getSingleProduct,
+  updateProduct,
+  deleteProduct,
+};
